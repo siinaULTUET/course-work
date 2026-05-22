@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Obrazovanie — Онлайн обучение</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-graduation-cap"></i> Online Obrazovanie</h1>
+            <nav>
+                <a href="#" onclick="showPage('home')">Главная</a>
+                <a href="#" onclick="showPage('catalog')">Курсы</a>
+                <a href="#" onclick="showPage('support')">Техническая поддержка</a>
+                <a href="#" onclick="showPage('profile')">Профиль</a>
+            </nav>
+            <div class="auth">
+                <button onclick="logout()" id="logoutBtn" style="display:none;">Выйти</button>
+                <button onclick="showLoginModal()" id="loginBtn">Войти</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Главная страница -->
+    <section id="home-page" class="page">
+        <div class="hero">
+            <h2>Обучайся. Развивайся. Достигай.</h2>
+            <p>Тысячи курсов от лучших преподавателей</p>
+            <button onclick="showPage('catalog')" class="btn-primary">Найти курс</button>
+        </div>
+
+        <div class="container">
+            <h3>Популярные курсы</h3>
+            <div class="courses-grid" id="popular-courses"></div>
+        </div>
+    </section>
+
+    <!-- Каталог курсов -->
+    <section id="catalog-page" class="page" style="display:none;">
+        <div class="container">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Поиск курсов..." onkeyup="filterCourses()">
+                <select id="categoryFilter" onchange="filterCourses()">
+                    <option value="">Все категории</option>
+                    <option value="programming">Программирование</option>
+                    <option value="design">Дизайн</option>
+                    <option value="marketing">Маркетинг</option>
+                    <option value="business">Бизнес</option>
+                </select>
+            </div>
+            <div class="courses-grid" id="all-courses"></div>
+        </div>
+    </section>
+
+    <!-- Страница курса -->
+    <section id="course-page" class="page" style="display:none;">
+        <div class="container" id="course-content"></div>
+    </section>
+
+    <!-- Техническая поддержка -->
+<section id="support-page" class="page" style="display:none;">
+    <div class="container">
+        <h2>Техническая поддержка Online Obrazovanie</h2>
+        <p style="text-align:center; max-width:800px; margin:0 auto 40px;">
+            Мы всегда готовы помочь! Выберите удобный способ связи или напишите нам.
+        </p>
+
+        <!-- Карточки контактов -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; margin-bottom:50px;">
+            
+            <!-- Telegram -->
+            <div style="background:white; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); text-align:center;">
+                <h3>📱 Telegram</h3>
+                <p style="font-size:1.5rem; margin:15px 0;">@Sawokerka</p>
+                <a href="https://t.me/Sawokerka" target="_blank" class="btn-primary" style="display:inline-block; padding:10px 25px;">Написать в Telegram</a>
+            </div>
+
+            <!-- WhatsApp -->
+            <div style="background:white; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); text-align:center;">
+                <h3>💬 WhatsApp</h3>
+                <p style="font-size:1.5rem; margin:15px 0;">+7 (999) 173-74-10</p>
+                <a href="https://web.WhatsApp.com/79991737410" target="_blank" class="btn-primary" style="display:inline-block; padding:10px 25px;">Написать в WhatsApp</a>
+            </div>
+
+            <!-- Discord -->
+            <div style="background:white; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); text-align:center;">
+                <h3>🎮 Discord</h3>
+                <p style="font-size:1.5rem; margin:15px 0;">Kitten Buddys</p>
+                <a href="#" onclick="alert('Присоединяйтесь к серверу: discord.gg/FkYn2YSW');" class="btn-primary" style="display:inline-block; padding:10px 25px;">Присоединиться к Discord</a>
+            </div>
+
+            <!-- Телефон -->
+            <div style="background:white; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); text-align:center;">
+                <h3>☎️ Горячая линия</h3>
+                <p style="font-size:1.5rem; margin:15px 0;">8 800 555-33-55</p>
+                <p style="color:#666;">(звонок бесплатный по РФ)</p>
+                <a href="tel:88005557733" class="btn-primary" style="display:inline-block; padding:10px 25px;">Позвонить</a>
+            </div>
+        </div>
+
+        <!-- Форма обращения -->
+        <h3 style="text-align:center; margin-bottom:20px;">Написать нам</h3>
+        <div style="max-width:700px; margin:0 auto; background:white; padding:30px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+            <form id="supportForm" onsubmit="sendSupportMessage(event)">
+                <input type="text" id="supportName" placeholder="Ваше имя" value="" required style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd; border-radius:6px;">
+                <input type="email" id="supportEmail" placeholder="Ваш email" required style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd; border-radius:6px;">
+                <select id="supportSubject" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd; border-radius:6px;">
+                    <option value="Техническая проблема">Техническая проблема</option>
+                    <option value="Вопрос по курсу">Вопрос по курсу</option>
+                    <option value="Проблема с видео">Проблема с видео</option>
+                    <option value="Другое">Другое</option>
+                </select>
+                <textarea id="supportMessage" rows="5" placeholder="Опишите вашу проблему или вопрос..." required style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd; border-radius:6px; resize:vertical;"></textarea>
+                <button type="submit" class="btn-primary" style="width:100%; padding:14px; margin-top:10px;">Отправить сообщение</button>
+            </form>
+        </div>
+
+        <!-- чат-бот -->
+<div id="chatWidget" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; width: 340px; font-family: 'Segoe UI', sans-serif;">
+    
+    <!-- Кнопка открытия чата -->
+    <button onclick="toggleChat()" id="chatToggleBtn"
+        style="background: #3498db; color: white; border: none; padding: 14px 24px; border-radius: 50px; box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4); cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600;">
+        💬 Чат с поддержкой
+    </button>
+
+    <!-- Окно чата -->
+    <div id="chatWindow" style="display: none; margin-top: 12px; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.25); overflow: hidden;">
+        
+        <!-- Заголовок -->
+        <div style="background: #2c3e50; color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <strong>Поддержка Online Obrazovanie</strong><br>
+                <small style="opacity: 0.9;">Онлайн • Ответим быстро</small>
+            </div>
+            <button onclick="toggleChat()" style="background: none; border: none; color: white; font-size: 22px; cursor: pointer; padding: 0 8px;">✕</button>
+        </div>
+
+        <!-- Сообщения -->
+        <div id="chatMessages" style="height: 340px; padding: 15px; overflow-y: auto; background: #f8f9fa; display: flex; flex-direction: column; gap: 12px;">
+        </div>
+
+        <!-- Поле ввода -->
+        <div style="padding: 15px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px;">
+            <input type="text" id="chatInput" placeholder="Напишите сообщение..." 
+                style="flex: 1; padding: 13px; border: 1px solid #ddd; border-radius: 10px; outline: none; font-size: 15px;">
+            <button onclick="sendChatMessage()" 
+                style="background: #3498db; color: white; border: none; width: 50px; border-radius: 10px; cursor: pointer; font-size: 18px;">
+                →
+            </button>
+        </div>
+    </div>
+</div>
+</section>
+
+    <!-- Профиль -->
+    <section id="profile-page" class="page" style="display:none;">
+        <div class="container">
+            <h2>Личный кабинет</h2>
+            <div id="profile-info"></div>
+            <h3>Прогресс обучения</h3>
+            <div id="progress-list"></div>
+        </div>
+    </section>
+
+<!-- Модальное окно логина -->
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <h3 id="modalTitle">Вход в аккаунт</h3>
+        
+        <div id="authForm">
+            <input type="text" id="username" placeholder="Имя пользователя" required>
+            <input type="password" id="password" placeholder="Пароль" required>
+        </div>
+        
+        <p id="switchText" style="margin: 20px 0 15px 0;">
+            Нет аккаунта? 
+            <span onclick="toggleAuthMode()" style="color:#3498db; cursor:pointer; font-weight:600;">Зарегистрироваться</span>
+        </p>
+
+        <!-- Кнопки внизу горизонтально -->
+        <div style="display: flex; gap: 12px; justify-content: center; margin-top: 10px;">
+            <button onclick="handleAuth()" 
+                style="flex: 1; padding: 14px; font-size: 16px; font-weight: 600; background: #3498db; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                Войти
+            </button>
+            
+            <button onclick="closeModal()" 
+                style="flex: 1; padding: 14px; font-size: 16px; font-weight: 600; background: #95a5a6; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                Закрыть
+            </button>
+        </div>
+    </div>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
